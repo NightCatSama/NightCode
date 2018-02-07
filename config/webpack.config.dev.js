@@ -98,7 +98,7 @@ module.exports = {
       '.scss'
     ],
     alias: {
-      
+      '@': paths.appSrc,
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -198,7 +198,7 @@ module.exports = {
                 loader: require.resolve('sass-loader'),
                 options: {
                   sourceMap: true,
-                  includePaths: [path.resolve(__dirname, 'src/')]
+                  includePaths: [paths.appSrc]
                 },
               },
             ],

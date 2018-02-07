@@ -8,7 +8,7 @@ import {
 
 import Home from './Home'
 
-import '../styles'
+import '../styles/core/'
 
 class App extends React.Component {
   render() {
