@@ -13,10 +13,10 @@ type User struct {
 // 添加用户
 func AddUser(account string, password string) (User, error) {
 	user := User{}
-	if C == nil {
+	if UserCollection == nil {
 		return user, fmt.Errorf("找不到数据库")
 	}
-	err := C.Insert(&User{ account, password })
+	err := UserCollection.Insert(&User{ account, password })
 	user, err = getUserByAccount(account)
 	if err != nil {
 		return user, err
@@ -28,10 +28,10 @@ func AddUser(account string, password string) (User, error) {
 // 得到用户列表
 func GetUSers() ([]User, error) {
 	users := []User{}
-	if C == nil {
+	if UserCollection == nil {
 		return users, fmt.Errorf("找不到数据库")
 	}
-	err := C.Find(bson.M{}).All(&users)
+	err := UserCollection.Find(bson.M{}).All(&users)
 	if err != nil {
 		fmt.Println("查询用户列表失败", err)
 	}
@@ -41,10 +41,10 @@ func GetUSers() ([]User, error) {
 // 根据账号搜索用户
 func getUserByAccount(account string) (User, error) {
 	user := User{}
-	if C == nil {
+	if UserCollection == nil {
 		return user, fmt.Errorf("找不到数据库")
 	}
-	err := C.Find(bson.M{ "account": account }).One(&user)
+	err := UserCollection.Find(bson.M{ "account": account }).One(&user)
 	if err != nil {
 		fmt.Println("查询用户失败", err)
 	}

@@ -1,0 +1,7 @@
+[server]
+port = "9090"
+
+[database]
+host = "localhost"
+port = "27017"
+db = "nightcode"

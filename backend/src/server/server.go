@@ -1,10 +1,13 @@
 package main
 
 import (
-	"controller"
+	"fmt"
 	"log"
-	"mongo"
 	"net/http"
+
+	"controller"
+	"mongo"
+	"config"
 )
 
 func main() {
@@ -13,7 +16,9 @@ func main() {
 	http.HandleFunc("/addUser", controller.HandleAddUser)
 	http.HandleFunc("/users", controller.HandleGetUsers)
 
-	err := http.ListenAndServe(":9090", nil)
+	sPort := ":" + config.Conf.Server.Port
+	fmt.Printf("[Server is opened]: localhost%s \n", sPort)
+	err := http.ListenAndServe(sPort, nil)
 	if err != nil {
 		log.Fatal("Server is open failed: ", err)
 	}
