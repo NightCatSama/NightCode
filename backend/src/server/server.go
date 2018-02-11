@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
+	"config"
 	"controller"
 	"mongo"
-	"config"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 	sPort := ":" + config.Conf.Server.Port
 	fmt.Printf("[Server is opened]: localhost%s \n", sPort)
 	err := http.ListenAndServe(sPort, nil)
-	
+
 	if err != nil {
 		log.Fatal("Server is open failed: ", err)
 	}

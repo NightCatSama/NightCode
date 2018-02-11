@@ -1,15 +1,15 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"encoding/json"
 )
 
 type Response struct {
-	Data interface{}
-	Msg string
-	Code int
+	Data interface{} `json:"data"`
+	Msg  string      `json:"msg"`
+	Code int         `json:"code"`
 }
 
 type Context struct {
@@ -17,6 +17,7 @@ type Context struct {
 	r *http.Request
 }
 
+// 设置响应头
 func (ctx *Context) SetHeader(key string, val string, unique bool) {
 	if unique {
 		ctx.w.Header().Set(key, val)
@@ -25,10 +26,11 @@ func (ctx *Context) SetHeader(key string, val string, unique bool) {
 	}
 }
 
+// 格式化成 JSON
 func (ctx *Context) fmtJson(code int, msg string, data interface{}) []byte {
-	res := Response {
+	res := Response{
 		Data: data,
-		Msg: msg,
+		Msg:  msg,
 		Code: code,
 	}
 	result, err := json.Marshal(res)
@@ -41,18 +43,21 @@ func (ctx *Context) fmtJson(code int, msg string, data interface{}) []byte {
 	}
 }
 
-func (ctx *Context) Error(msg string) {
+// 返回 400 错误
+func (ctx *Context) Error(msg string, err error) {
 	ctx.SetHeader("Content-Type", "application/json", false)
 	ctx.w.WriteHeader(400)
-	ctx.w.Write(ctx.fmtJson(400, msg, nil))
+	ctx.w.Write(ctx.fmtJson(400, msg, err))
 }
 
+// 返回 200 成功
 func (ctx *Context) Success(msg string, data interface{}) {
 	ctx.SetHeader("Content-Type", "application/json", false)
 	ctx.w.WriteHeader(200)
 	ctx.w.Write(ctx.fmtJson(200, msg, data))
 }
 
+// 返回 404 错误
 func (ctx *Context) NotFound() {
 	ctx.SetHeader("Content-Type", "application/json", false)
 	ctx.w.WriteHeader(404)

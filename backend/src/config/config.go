@@ -2,16 +2,16 @@ package config
 
 import (
 	"fmt"
-	"os"  
-	"path/filepath" 
-	"strings"
 	"log"
-	
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/BurntSushi/toml"
 )
 
 type tomlConfig struct {
-	Server server
+	Server   server
 	Database database
 }
 
@@ -29,14 +29,16 @@ var Conf tomlConfig
 
 const filePath = "../config/config.toml"
 
-func getCurrentDirectory() string {  
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))  
-	if err != nil {  
-			log.Fatal(err)  
+// 得到当前路径
+func getCurrentDirectory() string {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
 	}
-	return strings.Replace(dir, "\\", "/", -1)  
+	return strings.Replace(dir, "\\", "/", -1)
 }
 
+// 获取配置文件
 func init() {
 	absPath := filepath.Join(getCurrentDirectory(), filePath)
 	if _, err := toml.DecodeFile(absPath, &Conf); err != nil {
