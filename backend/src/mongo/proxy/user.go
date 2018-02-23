@@ -18,8 +18,12 @@ func AddUser(account string, password string) (User, error) {
 	if mongo.UserCollection == nil {
 		return user, fmt.Errorf("未连接数据库")
 	}
-	err := mongo.UserCollection.Insert(&User{account, password})
-	user, err = getUserByAccount(account)
+	user, err := GetUserByAccount(account)
+	if err == nil {
+		return user, fmt.Errorf("用户已存在")
+	}
+
+	err = mongo.UserCollection.Insert(&User{account, password})
 	if err != nil {
 		return user, err
 	}
@@ -41,7 +45,7 @@ func GetUSers() ([]User, error) {
 }
 
 // 根据账号搜索用户
-func getUserByAccount(account string) (User, error) {
+func GetUserByAccount(account string) (User, error) {
 	user := User{}
 	if mongo.UserCollection == nil {
 		return user, fmt.Errorf("未连接数据库")
@@ -51,4 +55,10 @@ func getUserByAccount(account string) (User, error) {
 		fmt.Println("查询用户失败", err)
 	}
 	return user, err
+}
+
+// 删除用户
+func RmoveUserByAccount(account string) error {
+	err := mongo.UserCollection.Remove(bson.M{"account": account})
+	return err
 }

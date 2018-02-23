@@ -8,6 +8,7 @@ import (
 
 var S *mgo.Session
 var UserCollection *mgo.Collection
+var TestCollection *mgo.Collection
 
 // 链接数据库
 func LinkDb() {
@@ -23,6 +24,7 @@ func LinkDb() {
 	fmt.Printf("[MongoDB is connected]: %s/%s \n", uri, config.Conf.Database.Db)
 
 	UserCollection = S.DB(config.Conf.Database.Db).C("user")
+	TestCollection = S.DB(config.Conf.Database.Db).C("test")
 }
 
 func CloseDb() {
