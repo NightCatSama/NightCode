@@ -25,3 +25,5 @@ yarn-error.log*
 
 mongodb.cmd
 mongodb.conf
+
+/backend
